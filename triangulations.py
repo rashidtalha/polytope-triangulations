@@ -1,4 +1,6 @@
 import math
+from itertools import cycle
+import matplotlib.pyplot as plt
 
 def complete_boundary(verts):
     N = len(verts)
@@ -157,6 +159,34 @@ def get_all_triangulations(V):
     dfs(0, 0)
     return solutions
 
+def plot_triangulations(polygon, triangulations, prefix="triangulation"):
+    poly_x = [v[0] for v in polygon] + [polygon[0][0]]
+    poly_y = [v[1] for v in polygon] + [polygon[0][1]]
+        
+    for idx, triangles in enumerate(triangulations):
+        title = f"{prefix}_{idx+1:>003}"
+
+        fig, ax = plt.subplots(figsize=(5, 5), tight_layout=True)
+        ax.plot(poly_x, poly_y, 'k-', linewidth=2, zorder=9)
+        
+        colors = cycle(plt.cm.tab20.colors)
+        for tri in triangles:
+            tri_vertices = list(tri) + [tri[0]]
+            xs, ys = zip(*tri_vertices)
+            color = next(colors)
+            ax.fill(xs, ys, alpha=0.5, color=color, edgecolor='black', linewidth=0.8)
+        
+        ax.axis(False)
+        ax.set_aspect('equal')
+        ax.grid(True, linestyle='-', alpha=0.6)
+        ax.set_title(title)
+        
+        fig.savefig(f"{title}.png", dpi=250, bbox_inches='tight')
+        print(f"Saved to {title}.png")
+
+        # plt.show()
+        plt.close()
+
 #########################
 
 if __name__ == '__main__':
@@ -181,3 +211,5 @@ if __name__ == '__main__':
     for idx in range(len(examples)):
         res = get_all_triangulations(examples[idx])
         print(f"Polygon {idx+1:>2} has {len(res):>2} triangulations")
+        # plot_triangulations(examples[idx], res, prefix=f"poly_{idx+1:>02}")
+        # print()
