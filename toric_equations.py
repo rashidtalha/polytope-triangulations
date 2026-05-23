@@ -53,8 +53,8 @@ def nullspace(M):
 
     return basis
 
-def compute_equations(b_pts):
-    A = np.array(b_pts, dtype=np.int64)
+def compute_equations(pts):
+    A = np.array(pts, dtype=np.int64)
     M = np.hstack([A, np.ones((len(A), 1), dtype=np.int64)]).T
     N = np.cross(M, np.roll(M, -1, axis=1), axis=0)
 
@@ -95,10 +95,14 @@ def compute_equations(b_pts):
 #########################
 
 if __name__ == '__main__':
+    # examples = [
+    #     [[0,0], [4,0], [3,1], [0,1]],
+    #     [[0,0], [4,0], [2,1], [0,1]],
+    #     [[-1,-1], [1,0], [0,1]],
+    # ]
     examples = [
-        [[0,0], [4,0], [3,1], [0,1]],
-        [[0,0], [4,0], [2,1], [0,1]],
-        [[-1,-1], [1,0], [0,1]]
+        [[-1,-1], [1,-1], [-1,3]],
+        [[-1,-1], [2,-1], [-1,2]],
     ]
     for j in examples:
         compute_equations(j)

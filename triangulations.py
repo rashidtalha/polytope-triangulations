@@ -1,6 +1,4 @@
-import math
-from itertools import cycle
-import matplotlib.pyplot as plt
+from math import gcd, atan2
 
 def complete_boundary(verts):
     N = len(verts)
@@ -8,13 +6,13 @@ def complete_boundary(verts):
     for j in range(N):
         dx = verts[(j+1) % N][0] - verts[j][0]
         dy = verts[(j+1) % N][1] - verts[j][1]
-        g = math.gcd(dx, dy)
+        g = gcd(dx, dy)
 
         for k in range(g):
             bucket.append([verts[j][0] + (k * (dx // g)), verts[j][1] + (k * (dy // g))])
     return bucket
 
-def get_all_triangulations(V):
+def get_all_triangulations(V, output="triangles"):
     V = complete_boundary(V)
     B = len(V)
     V_set = {tuple(v) for v in V}
@@ -54,7 +52,7 @@ def get_all_triangulations(V):
                 continue
             dx = pts[j][0] - pts[i][0]
             dy = pts[j][1] - pts[i][1]
-            if math.gcd(abs(dx), abs(dy)) == 1:
+            if gcd(abs(dx), abs(dy)) == 1:
                 cand.append((i, j))
     
     M = len(cand)
@@ -102,7 +100,7 @@ def get_all_triangulations(V):
             def angle_key(v):
                 dx = pts[v][0] - pts[u][0]
                 dy = pts[v][1] - pts[u][1]
-                return math.atan2(dy, dx)
+                return atan2(dy, dx)
             adj[u].sort(key=angle_key)
         
         visited = [[False] * N for _ in range(N)]
@@ -130,6 +128,18 @@ def get_all_triangulations(V):
                             tri = tuple(tuple(pts[v]) for v in face)
                             triangles.append(tri)
         return triangles
+
+    # Extract edges (boundary + selected diagonals) for a given selection of diagonals
+    def extract_edges(selected):
+        edges = []
+        # # Add boundary edges (as point coordinates)
+        # for (i, j) in boundary_edges:
+        #     edges.append((tuple(pts[i]), tuple(pts[j])))
+        # Add selected diagonals
+        for idx in selected:
+            i, j = cand[idx]
+            edges.append((tuple(pts[i]), tuple(pts[j])))
+        return edges
     
     # DFS for finding valid subsets
     solutions = []
@@ -137,8 +147,13 @@ def get_all_triangulations(V):
     
     def dfs(start_idx, count):
         if count == K:
-            solutions.append(extract_triangles(selected))
+            if output == 'triangles':
+                solutions.append(extract_triangles(selected))
+            else:
+                solutions.append(extract_edges(selected))
             return
+            # solutions.append(extract_triangles(selected))
+            # return
         if start_idx >= M:
             return
         if count + (M - start_idx) < K:
@@ -159,34 +174,6 @@ def get_all_triangulations(V):
     dfs(0, 0)
     return solutions
 
-def plot_triangulations(polygon, triangulations, prefix="triangulation"):
-    poly_x = [v[0] for v in polygon] + [polygon[0][0]]
-    poly_y = [v[1] for v in polygon] + [polygon[0][1]]
-        
-    for idx, triangles in enumerate(triangulations):
-        title = f"{prefix}_{idx+1:>003}"
-
-        fig, ax = plt.subplots(figsize=(5, 5), tight_layout=True)
-        ax.plot(poly_x, poly_y, 'k-', linewidth=2, zorder=9)
-        
-        colors = cycle(plt.cm.tab20.colors)
-        for tri in triangles:
-            tri_vertices = list(tri) + [tri[0]]
-            xs, ys = zip(*tri_vertices)
-            color = next(colors)
-            ax.fill(xs, ys, alpha=0.5, color=color, edgecolor='black', linewidth=0.8)
-        
-        ax.axis(False)
-        ax.set_aspect('equal')
-        ax.grid(True, linestyle='-', alpha=0.6)
-        ax.set_title(title)
-        
-        fig.savefig(f"{title}.png", dpi=250, bbox_inches='tight')
-        print(f"Saved to {title}.png")
-
-        # plt.show()
-        plt.close()
-
 #########################
 
 if __name__ == '__main__':
@@ -203,13 +190,15 @@ if __name__ == '__main__':
         [[0,0], [2,1], [0,3]],
         [[0,0], [1,0], [2,1], [0,3]],
         [[0,0], [2,0], [2,1], [1,2], [0,2]],
-        [[0,0], [2,0], [0,4]] ,
+        [[0,0], [2,0], [0,4]],
         [[0,0], [2,0], [2,1], [0,3]],
         [[0,0], [2,0], [2,2], [0,2]],
         [[0,0], [3,0], [0,3]]
     ]
     for idx in range(len(examples)):
-        res = get_all_triangulations(examples[idx])
+        res = get_all_triangulations(examples[idx], "edges")
         print(f"Polygon {idx+1:>2} has {len(res):>2} triangulations")
-        # plot_triangulations(examples[idx], res, prefix=f"poly_{idx+1:>02}")
-        # print()
+
+        # with open("poly_16_tri.txt", "w") as f:
+        #     f.write(str(res))
+        #     f.close()
