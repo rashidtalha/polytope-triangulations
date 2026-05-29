@@ -2,8 +2,7 @@ import numpy as np
 from fractions import Fraction
 
 def _texify_matrix(A):
-    M = np.hstack([A, np.ones((len(A), 1), dtype=np.int64)]).T
-    res = " \\\\ ".join([" & ".join(map(str, row)) for row in M])
+    res = " \\\\ ".join([" & ".join(map(str, row)) for row in A])
     return f"\\begin{{pmatrix}} {res} \\end{{pmatrix}}"
 
 def _rref(matrix):
@@ -80,10 +79,10 @@ def compute_equations(pts):
         eqs.append(res)
             
     print(f"Matrix of vertices:\n{M}")
-    # print(_texify_matrix(M))
+    print(_texify_matrix(M))
 
     print(f"\nMatrix of scaled normals:\n{N}")
-    # print(_texify_matrix(N))
+    print(_texify_matrix(N))
     
     print("\nDefining equation(s):")
     if len(eqs) == 0:
@@ -95,15 +94,12 @@ def compute_equations(pts):
 #########################
 
 if __name__ == '__main__':
-    # examples = [
+    examples = [
     #     [[0,0], [4,0], [3,1], [0,1]],
     #     [[0,0], [4,0], [2,1], [0,1]],
-    #     [[-1,-1], [1,0], [0,1]],
-    # ]
-    examples = [
-        [[-1,-1], [1,-1], [-1,3]],
-        [[-1,-1], [2,-1], [-1,2]],
+        [[-1,-1], [1,0], [0,1], [0,0]],
     ]
+    # examples = [ [[1,0], [0,1], [-1,-2], [0,0]] ]
     for j in examples:
         compute_equations(j)
         print(f"\n{'-'*50}\n")
