@@ -6,12 +6,15 @@ from triangulations import get_all_triangulations
 
 quilt_width = 5
 base = 3
+
 poly = np.array([[0,0], [base,0], [0,base], [0,0]])
+apex_x = ((1+np.arange(2*quilt_width)) // 2) * base
+apex_y = (np.arange(2*quilt_width) % 2) * base
 
 bucket = get_all_triangulations(poly[:-1])
 
-apex_x = ((1+np.arange(2*quilt_width)) // 2) * base
-apex_y = (np.arange(2*quilt_width) % 2) * base
+# rng = np.random.default_rng()
+# rng.shuffle(bucket)
 
 fig, ax = plt.subplots(figsize=(6,9), tight_layout=True)
 
@@ -26,7 +29,7 @@ for k in range(len(bucket)):
         xs = (sf * np.array(xs)) + apex_x[idx]
         ys = (sf * np.array(ys)) + apex_y[idx] + v_shift
 
-        ax.fill(xs, ys, closed=True, alpha=0.5, color=next(colors), edgecolor='black', linewidth=0.8, joinstyle='round')
+        ax.fill(xs, ys, closed=True, color=next(colors), alpha=0.6, edgecolor='black', linewidth=0.8, joinstyle='round')
 
     x = (sf * poly[:,0]) + apex_x[idx]
     y = (sf * poly[:,1]) + apex_y[idx] + v_shift
@@ -36,7 +39,7 @@ ax.set_aspect('equal')
 ax.axis(False)
 
 fig.savefig(f"polygon_16_quilt.pdf", dpi=1200, bbox_inches='tight')
-print(f"Saved to polygon_16_quilt.pdf")
+# print(f"Saved to polygon_16_quilt.pdf")
 
-plt.show()
+# plt.show()
 plt.close()
