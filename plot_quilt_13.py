@@ -4,23 +4,24 @@ from itertools import cycle
 
 from triangulations import get_all_triangulations
 
-quilt_width = 5
+quilt_width = 6
 
-poly = np.array([[0,0], [3,0], [0,3], [0,0]])
-apex_x = ((1+np.arange(2*quilt_width)) // 2) * 3
-apex_y = (np.arange(2*quilt_width) % 2) * 3
+poly = np.array([[0,0], [2,0], [0,4], [0,0]])
+apex_x = ((1+np.arange(2*quilt_width)) // 2) * 2
+apex_y = (np.arange(2*quilt_width) % 2) * 4
 
 bucket = get_all_triangulations(poly[:-1])
 
 for b in [6,7,8]:
-    fig, ax = plt.subplots(figsize=(6,9), tight_layout=True)
+    fig, ax = plt.subplots(figsize=(9,6), tight_layout=True)
 
     for k in range(len(bucket)):
         idx = k % (2*quilt_width)
-        v_shift = (k // (2*quilt_width)) * 3
+        v_shift = (k // (2*quilt_width)) * 4
         sf = 1 if k % 2 == 0 else -1
-        
-        colors = cycle(plt.cm.tab20.colors)
+
+        colors = cycle(["#1DB8F1", "#EACC08", "#ACC811", "#679A00", "#DBDEDC", "#DBAC03", "#97D0E7", "#297605"])
+
         for tri in bucket[k]:
             xs, ys = zip(*tri)
             xs = (sf * np.array(xs)) + apex_x[idx]
@@ -35,8 +36,8 @@ for b in [6,7,8]:
     ax.set_aspect('equal')
     ax.axis(False)
 
-    fig.savefig(f"output-quilts/polygon_16_quilt_{b}.pdf", dpi=1200, bbox_inches='tight')
-    print(f"Saved to output-quilts/polygon_16_quilt_{b}.pdf")
+    fig.savefig(f"output-quilts/polygon_13_quilt_{b}.pdf", dpi=1200, bbox_inches='tight')
+    print(f"Saved to output-quilts/polygon_13_quilt_{b}.pdf")
 
     # plt.show()
     plt.close()
