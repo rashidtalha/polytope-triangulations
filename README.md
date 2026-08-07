@@ -1,17 +1,34 @@
 Polytopes, Triangulations, and Toric Varieties
 ==============================================
 
-These python scripts are a small part of a project of [Elizabeth Gasparim](https://sites.google.com/view/elizabethgasparim). Some sections are still a work-in-progress.
+These python scripts are a small part of a project of [Elizabeth Gasparim](https://rashidtalha.github.io/research/). Some sections are still a work-in-progress.
+
+---
 
 ### Universal Quilts.
 
-IMAGES
+**Quilt 7:** (18 triangulations of polygon 7) Two different universal quilts
+<br><img src="https://github.com/rashidtalha/polytope-triangulations/blob/main/quilts/quilt_7a.png">
+<br><img src="https://github.com/rashidtalha/polytope-triangulations/blob/main/quilts/quilt_7b.png">
+
+**Quilt 13:** (24 triangulations of polygon 13)
+<br><img src="https://github.com/rashidtalha/polytope-triangulations/blob/main/quilts/quilt_13.png">
+
+**Quilt 15:** (64 triangulations of polygon 15)
+<br><img src="https://github.com/rashidtalha/polytope-triangulations/blob/main/quilts/quilt_15.png">
+
+**Quilt 16:** (79 triangulations of polygon 16)
+<br><img src="https://github.com/rashidtalha/polytope-triangulations/blob/main/quilts/quilt_16.png">
+
+---
 
 ### Additional Section about Games.
 
-UNDER CONSTRUCTION
+Under construction ...
 
-### Triangulations.
+---
+
+### Algorithm.
 This script computes all the primitive triangulations of a given convex polygon on a 2D lattice. The polygon is described by giving the complete list of the 2D coordinates of its vertices in clockwise direction. The result is a list of triangulations, where each triangulation is a list of triangles of area 1/2 whose union makes the given polygon. Each triangle is described as a list of three pairs of points (the vertices of the triangle).
 
 See the examples given within the script for more details.
