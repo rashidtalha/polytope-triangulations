@@ -72,12 +72,16 @@ def edge_type(edge, internal_edges, polygon):
         if (-v[0], -v[1]) in eeb:
             return "red"
 
+    cross_a = eea[0][0] * eea[1][1] - eea[0][1] * eea[1][0]
+    cross_b = eeb[0][0] * eeb[1][1] - eeb[0][1] * eeb[1][0]
+    if cross_a * cross_b == 0: return "red"
+
     for v in eea:
         if (-v[0], -v[1]) in eeb:
             return "green"
-    for v in eeb:
-        if (-v[0], -v[1]) in eea:
-            return "green"
+    # for v in eeb:
+    #     if (-v[0], -v[1]) in eea:
+    #         return "green"
 
     return "blue"
 
@@ -105,34 +109,33 @@ def plot_coloured_edges(polygon, triangulations, prefix="triangulation"):
 #########################
 
 if __name__ == '__main__':
-    # polygon = [[0,0], [3,0], [0,3]]
-    # polygon = [[0,0], [4,0], [0,2]]
-    # polygon = [[0,0], [3,0], [0,2]]
-    # polygon = [[1,0], [2,1], [2,2], [1,2], [0,1]]
-    # polygon = [[0,0], [2,1], [1,2], [0,2]]
-    # polygon = [[0,0], [2,1], [1,2], [0,1]]
+    polygon = [[0,0], [4,0], [0,2]]
+    res = get_all_triangulations(polygon, "edges")
+    print(f"Triangulations: {len(res):>2}")
+    plot_coloured_edges(polygon, res, f"T")
+    print()
 
-    examples = [
-        [[0,0], [2,1], [1,2]],
-        [[1,0], [2,1], [1,2], [0,1]],
-        [[0,0], [2,1], [1,2], [0,1]],
-        [[0,0], [3,1], [2,2]],
-        [[1,0], [2,1], [2,2], [1,2], [0,1]],
-        [[0,0], [2,1], [1,2], [0,2]],
-        [[0,0], [1,0], [2,1], [2,2], [1,2], [0,1]],
-        [[0,0], [2,0], [2,1], [0,2]],
-        [[1,0], [2,1], [2,2], [0,2], [0,1]],
-        [[0,0], [2,1], [0,3]],
-        [[0,0], [1,0], [2,1], [0,3]],
-        [[0,0], [2,0], [2,1], [1,2], [0,2]],
-        [[0,0], [2,0], [0,4]] ,
-        [[0,0], [2,0], [2,1], [0,3]],
-        [[0,0], [2,0], [2,2], [0,2]],
-        [[0,0], [3,0], [0,3]]
-    ]
-    for idx in range(len(examples)):
-        res = get_all_triangulations(examples[idx], "edges")
-        print(f"Polygon {idx+1:>2} has {len(res):>2} triangulations")
-        plot_coloured_edges(examples[idx], res, f"lines_poly_{idx+1:>02}")
-        print()
+    # examples = [
+    #     [[0,0], [2,1], [1,2]],
+    #     [[1,0], [2,1], [1,2], [0,1]],
+    #     [[0,0], [2,1], [1,2], [0,1]],
+    #     [[0,0], [3,1], [2,2]],
+    #     [[1,0], [2,1], [2,2], [1,2], [0,1]],
+    #     [[0,0], [2,1], [1,2], [0,2]],
+    #     [[0,0], [1,0], [2,1], [2,2], [1,2], [0,1]],
+    #     [[0,0], [2,0], [2,1], [0,2]],
+    #     [[1,0], [2,1], [2,2], [0,2], [0,1]],
+    #     [[0,0], [2,1], [0,3]],
+    #     [[0,0], [1,0], [2,1], [0,3]],
+    #     [[0,0], [2,0], [2,1], [1,2], [0,2]],
+    #     [[0,0], [2,0], [0,4]] ,
+    #     [[0,0], [2,0], [2,1], [0,3]],
+    #     [[0,0], [2,0], [2,2], [0,2]],
+    #     [[0,0], [3,0], [0,3]]
+    # ]
+    # for idx in range(len(examples)):
+    #     res = get_all_triangulations(examples[idx], "edges")
+    #     print(f"Polygon {idx+1:>2} has {len(res):>2} triangulations")
+    #     plot_coloured_edges(examples[idx], res, f"temp/lines_poly_{idx+1:>02}")
+    #     print()
 
