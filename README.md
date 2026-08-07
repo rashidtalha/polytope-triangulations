@@ -5,8 +5,6 @@ These python scripts are a small part of a project of [Elizabeth Gasparim](https
 
 ---
 
----
-
 ### Universal Quilts.
 
 **Quilt 7:** (18 triangulations of polygon 7) Two different universal quilts
